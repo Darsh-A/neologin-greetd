@@ -4,7 +4,18 @@ A neobrutal, monochrome "tech console" login screen for **greetd**, written in Q
 Hard shadows, hazard stripes, kanji labels, a scrolling caution tape, and two animated sequences:
 
 - **Success:** screen wipe, boot-style log (`[ OK ]` lines), sync-rate bar, `WELCOME` inversion, then the session starts.
+
+
+https://github.com/user-attachments/assets/0b65902b-5afe-4f25-a7f3-fbec049d40f2
+
+
 - **Failure:** red flash and shake, a retries counter, then a self-destruct countdown with a short input lockout.
+
+
+
+https://github.com/user-attachments/assets/23af6f85-38f9-41da-8f0e-3a6583ff67eb
+
+
 
 > Preview in any browser, no install: open `preview/index.html` (password `open` succeeds, anything else triggers the alarm).
 
