@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mono Tech Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--fg:#0b0b0b;--bg:#f2f2ee;--b:4px}
+body.inv{--fg:#f2f2ee;--bg:#0b0b0b}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:"Space Mono",ui-monospace,monospace;color:var(--fg);background:var(--bg);overflow:hidden;display:grid;place-items:center;font-size:13px;transition:background .15s,color .15s}
+.grid{position:fixed;inset:0;pointer-events:none;opacity:.14;background:linear-gradient(var(--fg) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,var(--fg) 1px,transparent 1px) 0 0/48px 48px}
+.bigtxt{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);font-family:"Archivo Black",Impact,sans-serif;font-size:min(34vw,420px);color:transparent;-webkit-text-stroke:2px var(--fg);opacity:.12;pointer-events:none;white-space:nowrap}
+.scan{position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#0000 0 3px,#0000000d 3px 4px)}
+.top{position:fixed;top:calc(18px + env(safe-area-inset-top,0px));left:18px;right:18px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.clock{border:var(--b) solid var(--fg);background:var(--fg);color:var(--bg);box-shadow:8px 8px 0 var(--fg);padding:8px 16px 10px;box-shadow:6px 6px 0 #8888}
+.clock b{font-family:"Archivo Black",Impact,sans-serif;font-size:56px;line-height:1;letter-spacing:-2px;display:block}
+.clock span{font-size:12px;letter-spacing:2px;text-transform:uppercase}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:3px solid var(--fg);background:var(--bg);padding:4px 10px;font-weight:700;font-size:12px;letter-spacing:1px;cursor:default}
+button.chip{cursor:pointer;font-family:inherit;color:var(--fg)}
+button.chip:hover{background:var(--fg);color:var(--bg)}
+.card{position:relative;width:min(440px,92vw);border:var(--b) solid var(--fg);background:var(--bg);box-shadow:10px 10px 0 var(--fg)}
+.hd{display:flex;justify-content:space-between;background:var(--fg);color:var(--bg);padding:6px 12px;font-weight:700;letter-spacing:2px;font-size:12px}
+.haz{height:12px;border-bottom:var(--b) solid var(--fg);background:repeating-linear-gradient(-45deg,var(--fg) 0 10px,var(--bg) 10px 20px)}
+.bd{padding:20px}
+.who{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+.av{position:relative;width:88px;height:88px;border:var(--b) solid var(--fg);display:grid;place-items:center;font-family:"Archivo Black",Impact,sans-serif;font-size:44px;background:radial-gradient(var(--fg) 1.5px,transparent 2px) 0 0/8px 8px;flex:none}
+.av i{background:var(--bg);width:100%;height:100%;display:grid;place-items:center;font-style:normal;margin:0;clip-path:polygon(0 0,100% 0,100% 62%,0 62%);position:absolute;inset:0}
+.av i+i{clip-path:none;background:none;mix-blend-mode:difference;color:var(--fg)}
+.lbl{font-size:11px;letter-spacing:2px;opacity:.7}
+.nm{font-family:"Archivo Black",Impact,sans-serif;font-size:30px;line-height:1.1}
+.row{display:flex;gap:8px;margin-top:4px}
+input{flex:1;min-width:0;font:inherit;font-weight:700;letter-spacing:3px;color:var(--fg);background:var(--bg);border:var(--b) solid var(--fg);padding:11px 12px;outline:none}
+input:focus{background:var(--fg);color:var(--bg);box-shadow:5px 5px 0 #8888}
+button{font:inherit;font-weight:700;letter-spacing:1px;color:var(--fg);background:var(--bg);border:var(--b) solid var(--fg);cursor:pointer;box-shadow:5px 5px 0 var(--fg);transition:transform .07s,box-shadow .07s}
+button:hover{background:var(--fg);color:var(--bg)}
+button:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--fg)}
+.eye{width:46px}
+.go{padding:0 16px;background:var(--fg);color:var(--bg)}
+.go:hover{background:var(--bg);color:var(--fg)}
+.sync{margin-top:16px}
+.bar{height:16px;border:3px solid var(--fg);margin-top:4px;background:repeating-linear-gradient(90deg,var(--bg) 0 6px,#0000 6px 8px)}
+.bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--fg) 0 6px,#0000 6px 8px);transition:width .15s}
+.msg{min-height:20px;margin-top:12px;font-weight:700;letter-spacing:1px}
+.seg{display:flex;margin-top:6px;border:var(--b) solid var(--fg)}
+.seg button{flex:1;border:0;border-right:3px solid var(--fg);box-shadow:none;padding:9px 4px;font-size:12px}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--fg);color:var(--bg)}
+.seg button:active{transform:none}
+.pow{position:fixed;bottom:56px;right:18px;display:flex;gap:10px}
+.pow button{padding:8px 12px;text-align:left;line-height:1.2;font-size:12px}
+.pow small{display:block;font-size:10px;opacity:.7;letter-spacing:2px}
+.hint{position:fixed;bottom:56px;left:18px;font-size:11px;letter-spacing:1px;opacity:.7}
+.tape{position:fixed;left:0;right:0;bottom:0;height:34px;border-top:var(--b) solid var(--fg);background:var(--fg);color:var(--bg);overflow:hidden;display:flex;align-items:center;padding-bottom:env(safe-area-inset-bottom,0px)}
+.tape div{white-space:nowrap;font-weight:700;letter-spacing:4px;animation:mq 30s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-12px)}40%{transform:translateX(12px)}60%{transform:translateX(-7px)}80%{transform:translateX(7px)}}
+body.alert,body.alarm{--fg:#ff2a2a;--bg:#140000}
+body.alarm{animation:bgp .5s steps(2) infinite}
+@keyframes bgp{50%{background:#2e0000}}
+body.alarm .top{opacity:.25}
+body.alarm .card{animation:jit .1s infinite}
+@keyframes jit{25%{transform:translate(2px,-1px)}75%{transform:translate(-2px,1px)}}
+.ov{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;justify-content:space-between;align-items:center;padding:70px 20px 110px;text-align:center;pointer-events:none;color:#ff2a2a}
+body.alarm .ov{display:flex}
+.ov::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 35%,#ff000077 100%);animation:vig .5s ease-in-out infinite alternate}
+@keyframes vig{to{opacity:.3}}
+.ov>*{position:relative}
+.ovt{font-weight:700;letter-spacing:6px;font-size:clamp(14px,3vw,24px);animation:blink .5s steps(2) infinite}
+@keyframes blink{50%{opacity:.2}}
+.cd{font-family:"Archivo Black",Impact,sans-serif;font-size:min(24vw,240px);line-height:1;text-shadow:5px 0 #fff3,-5px 0 #f003;animation:gl .25s steps(2) infinite}
+@keyframes gl{50%{transform:translate(4px,-2px) skewX(-3deg)}}
+.ovm{font-weight:700;letter-spacing:3px;font-size:clamp(13px,2.4vw,20px);background:#ff2a2a;color:#140000;padding:6px 14px}
+.okv{position:fixed;inset:0;z-index:60;background:var(--bg);color:var(--fg);display:none;flex-direction:column;justify-content:center;align-items:center;gap:18px;padding:20px}
+.okv.on{display:flex;animation:wipe .4s steps(8) both}
+@keyframes wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.okh{font-family:"Archivo Black",Impact,sans-serif;font-size:min(10vw,84px);text-align:center;line-height:1.05}
+.okh small{display:block;margin-top:10px;font-size:13px;letter-spacing:6px;font-family:"Space Mono",monospace}
+.okl{min-height:128px;width:min(460px,90vw);font-weight:700;letter-spacing:1px;font-size:14px}
+.okl div{margin:4px 0}
+.okb{width:min(460px,90vw);height:22px;border:var(--b) solid var(--fg);box-shadow:6px 6px 0 var(--fg)}
+.okb i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--fg) 0 8px,transparent 8px 10px);transition:width .4s steps(8)}
+.okv.fin{background:var(--fg);color:var(--bg)}
+.okv.fin .okb{border-color:var(--bg);box-shadow:6px 6px 0 var(--bg)}
+.okv.fin .okb i{background:repeating-linear-gradient(90deg,var(--bg) 0 8px,transparent 8px 10px)}
+@media(max-width:620px){.clock b{font-size:34px}.hint{display:none}.pow small{display:none}}
+@media(prefers-reduced-motion:reduce){.tape div,body.alarm,body.alarm .card,.cd,.ovt,.ov::before{animation:none}}
+</style>
+</head>
+<body class="inv">
+<div class="grid"></div><div class="bigtxt">認証</div><div class="scan"></div>
+
+<div class="top">
+  <div class="clock"><b id="t">00:00</b><span id="d"></span></div>
+  <div class="chips"><span class="chip" id="caps" hidden>CAPS LOCK</span><span class="chip">KB:US</span><span class="chip">BAT 76%</span><button class="chip" id="inv" title="Invert">◐ INVERT</button></div>
+</div>
+
+<main class="card" id="card">
+  <div class="hd"><span id="hl">AUTHENTICATION // 認証</span><span id="hr">● LINK OK</span></div>
+  <div class="haz"></div>
+  <div class="bd">
+    <div class="who">
+      <div class="av"><i>A</i><i>A</i></div>
+      <div><div class="lbl">OPERATOR</div><div class="nm">ARDO</div><div class="lbl">ID 0x4A2F · CLEARANCE 05</div></div>
+    </div>
+    <div class="lbl">PASSCODE</div>
+    <div class="row">
+      <input id="pw" type="password" placeholder="••••••••" autocomplete="off" autofocus>
+      <button class="eye" id="eye" title="Show">◉</button>
+      <button class="go" id="go">EXECUTE ▶</button>
+    </div>
+    <div class="sync"><div class="lbl">SYNC RATE <span id="sr">000</span>%</div><div class="bar"><i id="fill"></i></div></div>
+    <div class="msg" id="msg">&gt; AWAITING INPUT_</div>
+    <div class="lbl">RETRIES <span id="tries">▮▮▮</span></div>
+    <div class="lbl" style="margin-top:14px">SESSION // 環境</div>
+    <div class="seg" id="seg"></div>
+  </div>
+</main>
+
+<div class="ov"><div class="ovt" id="ovt">⚠ INTRUDER DETECTED ⚠ SELF-DESTRUCT INITIATED ⚠</div><div class="cd" id="cd">10</div><div class="ovm" id="ovm">&gt; ...</div></div>
+<div class="okv" id="okv"><div class="okh" id="okh">ACCESS GRANTED<small>認証完了 // LINK ESTABLISHED</small></div><div class="okl" id="okl"></div><div class="okb"><i id="okf"></i></div><div class="lbl">SYNC RATE <span id="okp">000</span>%</div></div>
+<div class="hint">DEMO: type open = OK · anything else = ALARM</div>
+<div class="pow">
+  <button>SUSPEND<small>待機</small></button>
+  <button>REBOOT<small>再起動</small></button>
+  <button>SHUTDOWN<small>停止</small></button>
+</div>
+<div class="tape"><div id="tp"></div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const DAYS=["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"];
+function tick(){const n=new Date();
+$("t").textContent=n.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",hour12:false});
+$("d").textContent=n.toLocaleDateString("en-CA")+" · "+DAYS[n.getDay()];}
+tick();setInterval(tick,1000);
+const T="CAUTION // AUTHENTICATION REQUIRED // 警告 // UNAUTHORIZED ACCESS WILL BE LOGGED // ";
+$("tp").textContent=T.repeat(8);
+const S=["Hyprland","KDE Plasma","GNOME"];let si=0;
+function drawSeg(){$("seg").innerHTML=S.map((s,i)=>`<button class="${i===si?"on":""}" data-i="${i}">${s.toUpperCase()}</button>`).join("")}
+drawSeg();
+$("seg").onclick=e=>{if(e.target.dataset.i){si=+e.target.dataset.i;drawSeg()}};
+$("eye").onclick=()=>{const p=$("pw");p.type=p.type==="password"?"text":"password"};
+$("inv").onclick=()=>document.body.classList.toggle("inv");
+$("pw").oninput=e=>{const v=Math.min(100,e.target.value.length*12);$("fill").style.width=v+"%";$("sr").textContent=String(v).padStart(3,"0")};
+let fails=0,locked=false;
+const OVT="⚠ INTRUDER DETECTED ⚠ SELF-DESTRUCT INITIATED ⚠",HL="AUTHENTICATION // 認証";
+const TD="DANGER // INTRUDER DETECTED // 侵入者検知 // LOCKDOWN IN PROGRESS // ";
+const MSG=["UNAUTHORIZED ACCESS LOGGED","SECURITY KEYS REVOKED","TRACING ORIGIN…","ISOLATING SESSION","PURGING SESSION CACHE","DEPLOYING COUNTERMEASURES","SEVERING NETWORK LINK","DATA SHREDDER ARMED","SAY GOODBYE","NO TURNING BACK"];
+function drawTries(){$("tries").textContent="▮".repeat(3-fails)+"▯".repeat(fails)}
+function shake(){const c=$("card");c.classList.remove("shake");void c.offsetWidth;c.classList.add("shake")}
+function red(ms,l){document.body.classList.add("alert");$("hl").textContent=l;setTimeout(()=>{if(!document.body.classList.contains("alarm")){document.body.classList.remove("alert");$("hl").textContent=HL}},ms)}
+function destruct(){locked=true;document.body.classList.add("alarm");$("tp").textContent=TD.repeat(8);$("hl").textContent="!! BREACH !!";$("hr").textContent="● COMPROMISED";
+let n=10;const step=()=>{if(n<0)return end();$("cd").textContent=String(n).padStart(2,"0");$("ovm").textContent=n?"> "+MSG[10-n]:"> ░░ PURGE COMPLETE ░░";n--;setTimeout(step,1000)};step()}
+function end(){$("ovt").textContent="SIMULATION ONLY // NOTHING WAS HARMED";let k=5;
+const t=()=>{if(k<0){document.body.classList.remove("alarm","alert");$("tp").textContent=T.repeat(8);$("hl").textContent=HL;$("hr").textContent="● LINK OK";$("msg").textContent="> AWAITING INPUT_";$("ovt").textContent=OVT;fails=0;drawTries();locked=false;return}
+$("cd").textContent="0"+k;$("ovm").textContent="> SEQUENCE ABORTED. LOCKOUT "+k+"s";k--;setTimeout(t,1000)};t()}
+function success(){locked=true;const o=$("okv"),L=$("okl");
+$("okh").innerHTML="ACCESS GRANTED<small>認証完了 // LINK ESTABLISHED</small>";L.innerHTML="";$("okf").style.width="0";$("okp").textContent="000";o.classList.remove("fin");o.classList.add("on");
+const steps=["VERIFYING IDENTITY","DECRYPTING KEYRING","SYNCHRONIZING SESSION","MOUNTING WORKSPACE","STARTING "+S[si].toUpperCase()];let i=0;
+const next=()=>{if(i>=steps.length)return setTimeout(fin,500);
+const d=document.createElement("div");d.innerHTML="> "+steps[i]+" <b>…</b>";L.appendChild(d);
+setTimeout(()=>{d.querySelector("b").textContent="[ OK ]"},380);
+const p=Math.round((++i)/steps.length*100);$("okf").style.width=p+"%";$("okp").textContent=String(p).padStart(3,"0");setTimeout(next,520)};
+setTimeout(next,450)
+function fin(){$("okh").innerHTML="WELCOME,<br>ARDO<small>LAUNCHING SESSION…</small>";o.classList.add("fin");
+setTimeout(()=>{o.classList.remove("on","fin");locked=false;$("msg").textContent="> AWAITING INPUT_";$("pw").value="";$("pw").oninput({target:$("pw")})},2600)}}
+function submit(){if(locked)return;const m=$("msg"),pw=$("pw").value;
+if(pw==="open"){fails=0;drawTries();success();return}
+fails++;drawTries();shake();
+if(fails===1){m.textContent="> ACCESS DENIED. 2 RETRIES LEFT.";red(700,"!! DENIED !!")}
+else if(fails===2){m.textContent="> FINAL WARNING. 1 RETRY LEFT.";red(1400,"!! WARNING !!")}
+else{m.textContent="> HOSTILE ACCESS CONFIRMED.";destruct()}
+$("pw").value="";$("pw").oninput({target:$("pw")})}
+$("go").onclick=submit;
+addEventListener("keydown",e=>{if(e.key==="Enter")submit();if(e.key==="Tab"){e.preventDefault();si=(si+1)%S.length;drawSeg()}
+$("caps").hidden=!e.getModifierState("CapsLock")});
+</script>
+</body>
+</html>
