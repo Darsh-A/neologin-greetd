@@ -30,7 +30,7 @@ Features: user avatar and name, password field with reveal toggle, session switc
 ## Install
 
 ```sh
-git clone https://github.com/Darsh-A/neo-login && cd neo-login
+git clone https://github.com/Darsh-A/neologin-greetd && cd neo-login
 ./install.sh          # installs to /usr/local/share/neo-login, never edits greetd config
 ```
 
